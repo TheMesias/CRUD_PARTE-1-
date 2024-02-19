@@ -12,7 +12,12 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireModule } from '@angular/fire/compat'; 
 
 export const firebaseConfig = {
- 
+  apiKey: "AIzaSyCP_YJV_iHW1SznaIrtKbbWvGGrBii66SU",
+  authDomain: "empleados-a73b2.firebaseapp.com",
+  projectId: "empleados-a73b2",
+  storageBucket: "empleados-a73b2.appspot.com",
+  messagingSenderId: "348371477256",
+  appId: "1:348371477256:web:99e22412d206e14a2f82bd"
 };
 
 

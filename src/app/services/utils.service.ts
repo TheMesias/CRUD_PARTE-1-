@@ -25,5 +25,9 @@ export class UtilsService {
     const toast = await this.toasCtrl.create(opts);
       toast.present();//
     
-}
+  }
+
+  saveLocalStorage(key: string, value: any){
+    return localStorage.setItem(key,JSON.stringify(value));
+  }
 }

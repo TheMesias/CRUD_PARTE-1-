@@ -33,12 +33,7 @@ export class SignUpPage implements OnInit {
 
       this.firebaseService.SignUp(this.form.value as User)
       .then(async resp => {
-        await this.firebaseService.updateUser(this.form.value.name); ////
-       
-        let uid = resp.user.uid;////
-        this.form.controls.uid.setValue(uid);////
-
-        this.setUserInfo(uid); ////
+        this.getUserInfo(resp.user.uid);
 
       }).catch(err => {
         console.log(err);
@@ -61,8 +56,38 @@ export class SignUpPage implements OnInit {
 
     this.firebaseService.setDocument(path, this.form.value)
     .then(async resp => {
+      this.utilsService.saveLocalStorage('user', this.form.value);
       this.utilsService.routerLink('/main/home'); //redireccionar a home luego de ingresar credenciales
       this.form.reset(); //para que se limpie el formulario
+    }).catch(err => {
+      console.log(err);
+      this.utilsService.presentToast({message: err.message, 
+      duration: 2000, color: 'danger', position: 'top', animated: true, icon: 'alert-circle-outline'});
+    }).finally(() => {
+      loading.dismiss();
+    })
+  }
+
+  async getUserInfo(uid: string){
+    const loading = await this.utilsService.loading(); ///
+    await loading.present(); ///
+
+    let path = `users/${uid}`;
+
+    this.firebaseService.getDocument(path)
+    .then((user: User) => {
+      this.utilsService.saveLocalStorage('user', user);
+      this.utilsService.routerLink('/main/home'); //redireccionar a home luego de ingresar credenciales
+      this.form.reset(); //para que se limpie el formulario
+      this.utilsService.presentToast
+      ({
+        message: `Bienvenido ${user.name}!`, 
+        duration: 1500, 
+        color: 'primary', 
+        position: 'top', 
+        animated: true, 
+        icon: 'person-circle-outline'
+      });
     }).catch(err => {
       console.log(err);
       this.utilsService.presentToast({message: err.message, 
